@@ -1,9 +1,12 @@
 package com.reuniones.salareserva.shared.config;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +19,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenApiConfig {
 
+    private static final String SCHEME_NAME = "bearer-jwt";
+
     @Bean
     public OpenAPI salaReservaOpenAPI() {
         return new OpenAPI()
@@ -26,6 +31,13 @@ public class OpenApiConfig {
                                 + "crear y cancelar requieren autenticación JWT.")
                         .version("v1")
                         .contact(new Contact().name("Equipo sala-reserva"))
-                        .license(new License().name("MIT")));
+                        .license(new License().name("MIT")))
+                .components(new Components().addSecuritySchemes(SCHEME_NAME,
+                        new SecurityScheme()
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")
+                                .description("Token JWT obtenido en POST /api/auth/login")))
+                .addSecurityItem(new SecurityRequirement().addList(SCHEME_NAME));
     }
 }
