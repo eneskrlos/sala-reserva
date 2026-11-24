@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: sala-reserva-db
+    environment:
+      POSTGRES_DB: sala_reserva
+      POSTGRES_USER: sala
+      POSTGRES_PASSWORD: sala
+    ports:
+      # Host 5439 -> contenedor 5432 (5432/5437 ya los usan otras instancias Postgres)
+      - "127.0.0.1:5439:5432"
+    volumes:
+      - sala_reserva_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sala -d sala_reserva"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  sala_reserva_pgdata:
