@@ -1,0 +1,68 @@
+# Memory.md — Memoria del proyecto
+
+> Decisiones, modelo de datos y aprendizajes que deben persistir entre sesiones.
+> Última actualización: 2026-11-24.
+
+## Contexto
+- Proyecto greenfield. Repo en GitHub: `git@github.com:eneskrlos/sala-reserva.git`.
+- Flujo **git-flow**: `main` (producción), `develop` (integración), features/tasks.
+- Rama de análisis/spec: `feature/analyse_project`.
+- Entorno: JDK 21 instalado (target Java 17), Maven 3.9.12, Docker 29, git + git-flow.
+
+## Decisiones de arquitectura
+- **Monolito Modular**, paquete base `com.reuniones.salareserva`.
+- Módulos: `auth`, `salas`, `reservas`, `shared` (config, exception, dto comunes).
+- Capas por módulo: Controller → Service → Repository (Spring Data JPA) + entidad + DTOs/mapper.
+
+## Decisiones de negocio
+- **responsable**: texto libre (nombre/email) en el body de la reserva.
+- **Cancelar reserva**: borrado lógico → `estado = CANCELADA`. No bloquea horario.
+- **Estados de reserva**: `ACTIVA`, `CANCELADA`.
+- **Solape (HTTP 409)**: misma sala y estado `ACTIVA` con
+  `inicio < fin_existente AND fin > inicio_existente`.
+- **Auth**: usuarios en BD (semilla con BCrypt). Endpoints `login` y `register` públicos.
+  GET públicos; POST/DELETE requieren JWT.
+
+## Modelo de datos (detalle)
+### usuarios
+| Columna | Tipo | Notas |
+|---|---|---|
+| id | BIGSERIAL | PK |
+| username | VARCHAR | UNIQUE, NOT NULL |
+| password | VARCHAR | NOT NULL (hash BCrypt) |
+| rol | VARCHAR | NOT NULL, DEFAULT 'USER' |
+| created_at | TIMESTAMPTZ | DEFAULT now() |
+
+### salas
+| Columna | Tipo | Notas |
+|---|---|---|
+| id | BIGSERIAL | PK |
+| nombre | VARCHAR | UNIQUE, NOT NULL |
+| ubicacion | VARCHAR | NULL |
+| capacidad | INT | NULL, CHECK (capacidad > 0) |
+| activa | BOOLEAN | NOT NULL, DEFAULT true |
+| created_at | TIMESTAMPTZ | DEFAULT now() |
+
+### reservas
+| Columna | Tipo | Notas |
+|---|---|---|
+| id | BIGSERIAL | PK |
+| sala_id | BIGINT | FK → salas(id), NOT NULL |
+| responsable | VARCHAR | NOT NULL |
+| inicio | TIMESTAMPTZ | NOT NULL |
+| fin | TIMESTAMPTZ | NOT NULL |
+| estado | VARCHAR | NOT NULL, DEFAULT 'ACTIVA' |
+| created_at | TIMESTAMPTZ | DEFAULT now() |
+
+Constraints de `reservas`:
+- `CHECK (fin > inicio)`.
+- *Exclusion constraint* (requiere extensión `btree_gist`):
+  `EXCLUDE USING gist (sala_id WITH =, tstzrange(inicio, fin) WITH &&) WHERE (estado = 'ACTIVA')`.
+- Índice por `(sala_id, inicio, fin)` para consultas/filtros.
+
+## Patrones de diseño previstos
+Repository, DTO + Mapper, Specification (filtros dinámicos de reservas), Global Exception
+Handler (ProblemDetail RFC-7807), Builder, Dependency Injection, Filter Chain (JWT).
+
+## Aprendizajes / notas técnicas
+- (vacío por ahora — se irá completando al avanzar las tareas)
