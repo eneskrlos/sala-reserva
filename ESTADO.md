@@ -13,8 +13,8 @@ Leyenda: ⬜ Pendiente · 🟦 En progreso · ✅ Hecha (confirmada por el usuar
 | 3 | Seguridad JWT + Auth (login/register) | `task-3-seguridad-jwt` | ✅ Hecha | Sí (mergeado a develop) |
 | 4 | Módulo Salas (crear/listar) | `task-4-salas` | ✅ Hecha | Sí (mergeado a develop) |
 | 5 | Módulo Reservas (crear/cancelar/listar) | `task-5-reservas` | ✅ Hecha | Sí (mergeado a develop) |
-| 6 | Tests (≥3, incl. integración MockMvc) | `task-6-tests` | ✅ Hecha | Pendiente |
-| 7 | README + documentación | `task-7-readme` | ⬜ Pendiente | — |
+| 6 | Tests (≥3, incl. integración MockMvc) | `task-6-tests` | ✅ Hecha | Sí (mergeado a develop) |
+| 7 | README + documentación | `task-7-readme` | ✅ Hecha | Pendiente |
 
 ## Bitácora
 - **2026-11-24** — Inicio del proyecto. Lectura de `promt_init.txt`, confirmación de decisiones
@@ -56,4 +56,9 @@ Leyenda: ⬜ Pendiente · 🟦 En progreso · ✅ Hecha (confirmada por el usuar
   cubre el flujo completo (login, crear sala, crear reserva, solape 409, listar, cancelar y
   re-reservar), 401 sin token, GET público y 400 de validación. Fix de compatibilidad Docker 29:
   `api.version=1.44` vía Surefire (docker-java por defecto pedía API 1.32, rechazada por el
-  daemon). **Commit local pendiente de push.**
+  daemon). **Mergeado a develop (pusheado).**
+- **2026-11-24** — Task 7 (README): documentación completa del proyecto en `README.md`: cómo
+  ejecutarlo (Docker + Maven + Swagger), variables de entorno, tabla de endpoints, ejemplos
+  `curl`, modelo de datos y regla de solape, cómo correr los tests, y las secciones dirigidas al
+  evaluador en primera persona (decisiones tomadas, qué haría con más tiempo y cómo usé la IA).
+  **Commit local pendiente (lo realiza el usuario).**

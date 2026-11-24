@@ -117,3 +117,9 @@ Handler (ProblemDetail RFC-7807), Builder, Dependency Injection, Filter Chain (J
   `docker.api.version` del `pom.xml`. Sin esto, los tests de integración fallan con
   "client version 1.32 is too old". Subir solo `testcontainers.version` NO basta (docker-java lo
   fija Spring Boot). Los tests requieren Docker corriendo.
+- **Documentación** (Task 7): `README.md` con ejecución, variables de entorno, endpoints,
+  ejemplos `curl`, modelo de datos, tests y las secciones para el evaluador (decisiones, qué haría
+  con más tiempo, uso de IA).
+- **Estado del proyecto**: completadas las 7 tareas (bootstrap, esquema BD, seguridad JWT, salas,
+  reservas, tests, README). Flujo de trabajo: rama `task-<n>-<nombre>` desde `develop`, reporte +
+  confirmación por tarea, merge a `develop` por Claude, **push siempre por el usuario**.
