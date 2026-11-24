@@ -11,8 +11,8 @@ Leyenda: ⬜ Pendiente · 🟦 En progreso · ✅ Hecha (confirmada por el usuar
 | 1 | Bootstrap del proyecto | `task-1-bootstrap` | ✅ Hecha | Sí (mergeado a develop) |
 | 2 | Esquema BD + Flyway | `task-2-esquema-bd` | ✅ Hecha | Sí (mergeado a develop) |
 | 3 | Seguridad JWT + Auth (login/register) | `task-3-seguridad-jwt` | ✅ Hecha | Sí (mergeado a develop) |
-| 4 | Módulo Salas (crear/listar) | `task-4-salas` | ✅ Hecha | Pendiente |
-| 5 | Módulo Reservas (crear/cancelar/listar) | `task-5-reservas` | ⬜ Pendiente | — |
+| 4 | Módulo Salas (crear/listar) | `task-4-salas` | ✅ Hecha | Sí (mergeado a develop) |
+| 5 | Módulo Reservas (crear/cancelar/listar) | `task-5-reservas` | ✅ Hecha | Pendiente |
 | 6 | Tests (≥3, incl. integración MockMvc) | `task-6-tests` | ⬜ Pendiente | — |
 | 7 | README + documentación | `task-7-readme` | ⬜ Pendiente | — |
 
@@ -40,4 +40,14 @@ Leyenda: ⬜ Pendiente · 🟦 En progreso · ✅ Hecha (confirmada por el usuar
   `SalaController` (`POST /api/salas` protegido, `GET /api/salas` público), DTOs
   (`CrearSalaRequest`, `SalaResponse`) y excepción `SalaYaExisteException` (409). Verificado:
   POST sin token 401 / con token 201, duplicado 409, validación 400, GET público 200 ordenado
-  por nombre. **Commit local pendiente de push.**
+  por nombre. **Mergeado a develop (pusheado).**
+- **2026-11-24** — Task 5 (módulo reservas): entidad `Reserva` + enum `EstadoReserva`,
+  `ReservaRepository` (`existeSolape`, `JpaSpecificationExecutor`), `ReservaSpecifications`
+  (filtros sala/fecha), `ReservaService`, `ReservaController` (`POST` y `DELETE` protegidos,
+  `GET` público paginado), DTOs (`CrearReservaRequest`, `ReservaResponse`,
+  `shared/dto/PaginaResponse`) y excepciones `RecursoNoEncontradoException` (404),
+  `SolapeReservaException` (409), `ReglaNegocioException` (400). Verificado: crear 201,
+  sin token 401, solape 409, contigua 201, otra sala 201, fin<inicio 400, sala inexistente 404,
+  validación 400; listado con filtros sala/fecha y paginación; cancelar 204 (lógico, libera
+  horario) / sin token 401 / inexistente 404; cancelada visible como CANCELADA.
+  **Commit local pendiente de push.**

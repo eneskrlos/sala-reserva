@@ -97,3 +97,12 @@ Handler (ProblemDetail RFC-7807), Builder, Dependency Injection, Filter Chain (J
   (case-insensitive) → 409 `SalaYaExisteException`. `GET /api/salas` (público) lista ordenado por
   nombre. DTOs `CrearSalaRequest` (solo `nombre` obligatorio; `capacidad` `@Positive`) y
   `SalaResponse`. Mapeo vía métodos estáticos `from(...)` en los records (sin librería de mapper).
+- **Módulo reservas** (Task 5): `Reserva` con `@ManyToOne Sala` y `estado` enum
+  (`@Enumerated(STRING)`). `POST /api/reservas` (JWT): 404 sala inexistente, 400 fin<=inicio,
+  409 solape (chequeo en servicio con `existeSolape` + red de seguridad por
+  `DataIntegrityViolationException` de la exclusion constraint). `DELETE /api/reservas/{id}` (JWT)
+  = borrado lógico idempotente (estado→CANCELADA; libera el horario). `GET /api/reservas`
+  (público) con filtros `salaId` y `fecha` (fecha interpretada en UTC, intersección de día) vía
+  **JPA Specifications** (`ReservaSpecifications`, métodos null-safe) y paginación
+  (`@PageableDefault size=20, sort=inicio ASC`). Respuesta envuelta en `PaginaResponse<T>`
+  (no se expone `Page` interno). Fechas como `OffsetDateTime` ISO-8601.
