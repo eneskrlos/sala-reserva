@@ -11,7 +11,7 @@ Las tareas que debo impelemnetar son:
 4. Base de datos PostgreSQL con migraciones (Flyway).
 5. Los endpoints que crean o cancelan requieren autenticación (JWT); los de consulta no.
 6. Al menos 3 tests, uno de ellos de integración (MockMvc).
-7. Un README con cómo ejecutarlo, las decisiones que tomaste, qué harías con más tiempo y cómo usaste la IA (qué le pediste, qué aceptaste y qué corregiste).
+7. Un README con cómo ejecutarlo.
 
 El proyecto va adoptar la arquitectura Monolito Modular el cual encaja para este proyecto pero en tu analisis puedes sugerirme algun otro y lo conversamos.
 Tienes que cumplir con las buenas practicas y calidad de desarrollo de software. 
