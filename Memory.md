@@ -65,4 +65,14 @@ Repository, DTO + Mapper, Specification (filtros dinámicos de reservas), Global
 Handler (ProblemDetail RFC-7807), Builder, Dependency Injection, Filter Chain (JWT).
 
 ## Aprendizajes / notas técnicas
-- (vacío por ahora — se irá completando al avanzar las tareas)
+- **Versiones**: Spring Boot 3.3.5, springdoc-openapi 2.6.0, Lombok. Java compilado con
+  `maven.compiler.release=17` sobre JDK 21.
+- **Puerto Postgres (host)**: **5439** (no 5432/5437, ya ocupados por otras instancias Docker
+  del equipo: `labgarcias_db_app` usa 5437). Contenedor `sala-reserva-db` atado a `127.0.0.1`.
+- **Config datasource** por variables de entorno con defaults locales (`DB_URL`, `DB_USER`,
+  `DB_PASSWORD`, `SERVER_PORT`) en `application.yml`.
+- **Flyway** gobierna el esquema (`spring.jpa.hibernate.ddl-auto=validate`). Las migraciones
+  viven en `src/main/resources/db/migration` (se crean en Task 2).
+- **Orden de dependencias**: seguridad/JWT se añaden en Task 3 (no antes, para que Swagger sea
+  accesible durante el bootstrap); Testcontainers en Task 6.
+- **Swagger UI**: `http://localhost:8080/swagger-ui.html`; OpenAPI JSON en `/v3/api-docs`.
