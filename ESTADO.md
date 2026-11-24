@@ -10,8 +10,8 @@ Leyenda: ⬜ Pendiente · 🟦 En progreso · ✅ Hecha (confirmada por el usuar
 | 0 | Spec/SDD (CLAUDE, PLAN, ESTADO, Memory) | `feature/analyse_project` | ✅ Hecha | Sí |
 | 1 | Bootstrap del proyecto | `task-1-bootstrap` | ✅ Hecha | Sí (mergeado a develop) |
 | 2 | Esquema BD + Flyway | `task-2-esquema-bd` | ✅ Hecha | Sí (mergeado a develop) |
-| 3 | Seguridad JWT + Auth (login/register) | `task-3-seguridad-jwt` | ✅ Hecha | Pendiente |
-| 4 | Módulo Salas (crear/listar) | `task-4-salas` | ⬜ Pendiente | — |
+| 3 | Seguridad JWT + Auth (login/register) | `task-3-seguridad-jwt` | ✅ Hecha | Sí (mergeado a develop) |
+| 4 | Módulo Salas (crear/listar) | `task-4-salas` | ✅ Hecha | Pendiente |
 | 5 | Módulo Reservas (crear/cancelar/listar) | `task-5-reservas` | ⬜ Pendiente | — |
 | 6 | Tests (≥3, incl. integración MockMvc) | `task-6-tests` | ⬜ Pendiente | — |
 | 7 | README + documentación | `task-7-readme` | ⬜ Pendiente | — |
@@ -35,4 +35,9 @@ Leyenda: ⬜ Pendiente · 🟦 En progreso · ✅ Hecha (confirmada por el usuar
   Bearer en Swagger. Deps añadidas: spring-boot-starter-security, jjwt 0.12.6. Verificado:
   login admin 200+token, register 201, duplicado 409, credenciales malas 401, validación 400,
   ruta protegida sin token 401 / con token 404 / token inválido 401, GET público no bloqueado.
-  **Commit local pendiente de push.**
+  **Mergeado a develop (pusheado).**
+- **2026-11-24** — Task 4 (módulo salas): entidad `Sala`, `SalaRepository`, `SalaService`,
+  `SalaController` (`POST /api/salas` protegido, `GET /api/salas` público), DTOs
+  (`CrearSalaRequest`, `SalaResponse`) y excepción `SalaYaExisteException` (409). Verificado:
+  POST sin token 401 / con token 201, duplicado 409, validación 400, GET público 200 ordenado
+  por nombre. **Commit local pendiente de push.**

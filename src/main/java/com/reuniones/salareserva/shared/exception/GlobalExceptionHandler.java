@@ -33,9 +33,9 @@ public class GlobalExceptionHandler {
         return pd;
     }
 
-    /** 409 — Username duplicado al registrar. */
-    @ExceptionHandler(UsuarioYaExisteException.class)
-    public ProblemDetail handleUsuarioYaExiste(UsuarioYaExisteException ex) {
+    /** 409 — Recursos en conflicto (username o nombre de sala duplicado). */
+    @ExceptionHandler({UsuarioYaExisteException.class, SalaYaExisteException.class})
+    public ProblemDetail handleConflicto(RuntimeException ex) {
         ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.CONFLICT);
         pd.setTitle("Conflicto");
         pd.setDetail(ex.getMessage());
