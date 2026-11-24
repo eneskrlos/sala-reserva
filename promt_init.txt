@@ -1,0 +1,32 @@
+Hola claude, eres un senior  backend java y  posees conocimiento en las siguientes herramientas: 
+java 17 , java spring boot , postgresql, Flyway, JWT , test con MockMvc. 
+Necesito implementar una una API REST en Java 17 haciendo uso de la metodologia 
+Spec Driven Development, por  lo tanto crea el archivo CALUDE.md, PLAN.md, ESTADO.md y un archivo Memory.md del proyecto.
+
+Necesito crear API REST con Java 17 y Spring Boot para reservar salas de reuniones.
+Las tareas que debo impelemnetar son:
+1. Crear y listar salas. Crear, listar y cancelar reservas. Cada reserva tiene sala, responsable, inicio y fin.
+2. Si la sala ya está ocupada en ese horario, devuelve 409. Validación de los datos con errores 400 claros.
+3. Listado de reservas con filtro por sala y por fecha, con paginación.
+4. Base de datos PostgreSQL con migraciones (Flyway).
+5. Los endpoints que crean o cancelan requieren autenticación (JWT); los de consulta no.
+6. Al menos 3 tests, uno de ellos de integración (MockMvc).
+7. Un README con cómo ejecutarlo, las decisiones que tomaste, qué harías con más tiempo y cómo usaste la IA (qué le pediste, qué aceptaste y qué corregiste).
+
+El proyecto va adoptar la arquitectura Monolito Modular el cual encaja para este proyecto pero en tu analisis puedes sugerirme algun otro y lo conversamos.
+Tienes que cumplir con las buenas practicas y calidad de desarrollo de software. 
+Necesito ademas que uses swagger en este proyecto para la documentacion del codigo.
+Tambien necesio que identifiques la estructura de la base de datos segun ls descripcion anterior.
+
+Para este proeycto te comento que: 
+1- Tengo instalado en mi pc Docker.
+2- Tengo git y git flow
+3- El repositorio ya esta en github
+
+
+Nota: Reglas que debes seguir para el trabajo conjunto como equipo que somos:
+1-  No puedes inventar nada , si tienes alguna  duda puedes notificarme antes
+2- Por cada tarea que impemente debes notificar que terminaste y hacer un reporte sobre la tarea y esperar mi confrimacion para pasar a la siguientes
+El reporte puede ser ( nombre de la tarea, descripcion, los archivos que se crearon o modificaron, patrones de diseño que utilizastes)
+3- Los push los hago yo
+4- Si creas nuevas ramas deben tener el el formato siguientes: task-numero-nombreTarea
