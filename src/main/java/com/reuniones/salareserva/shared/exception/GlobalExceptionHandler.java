@@ -33,8 +33,27 @@ public class GlobalExceptionHandler {
         return pd;
     }
 
-    /** 409 — Recursos en conflicto (username o nombre de sala duplicado). */
-    @ExceptionHandler({UsuarioYaExisteException.class, SalaYaExisteException.class})
+    /** 400 — Regla de negocio incumplida (p. ej. fin anterior al inicio). */
+    @ExceptionHandler(ReglaNegocioException.class)
+    public ProblemDetail handleReglaNegocio(ReglaNegocioException ex) {
+        ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        pd.setTitle("Solicitud inválida");
+        pd.setDetail(ex.getMessage());
+        return pd;
+    }
+
+    /** 404 — Recurso no encontrado. */
+    @ExceptionHandler(RecursoNoEncontradoException.class)
+    public ProblemDetail handleNoEncontrado(RecursoNoEncontradoException ex) {
+        ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        pd.setTitle("No encontrado");
+        pd.setDetail(ex.getMessage());
+        return pd;
+    }
+
+    /** 409 — Recursos en conflicto: duplicados o solape de reservas. */
+    @ExceptionHandler({UsuarioYaExisteException.class, SalaYaExisteException.class,
+            SolapeReservaException.class})
     public ProblemDetail handleConflicto(RuntimeException ex) {
         ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.CONFLICT);
         pd.setTitle("Conflicto");
