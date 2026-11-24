@@ -1,0 +1,53 @@
+package com.reuniones.salareserva.shared.exception;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+/**
+ * Manejo centralizado de errores. Devuelve respuestas consistentes con
+ * {@link ProblemDetail} (RFC-7807). Se amplía en tareas posteriores (404 de recursos,
+ * 409 de solape de reservas, etc.).
+ */
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    /** 400 — Errores de validación de Bean Validation sobre el cuerpo de la petición. */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ProblemDetail handleValidation(MethodArgumentNotValidException ex) {
+        ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        pd.setTitle("Datos inválidos");
+        pd.setDetail("Uno o más campos no superaron la validación.");
+        Map<String, String> errores = new LinkedHashMap<>();
+        for (FieldError fe : ex.getBindingResult().getFieldErrors()) {
+            errores.putIfAbsent(fe.getField(), fe.getDefaultMessage());
+        }
+        pd.setProperty("errores", errores);
+        return pd;
+    }
+
+    /** 409 — Username duplicado al registrar. */
+    @ExceptionHandler(UsuarioYaExisteException.class)
+    public ProblemDetail handleUsuarioYaExiste(UsuarioYaExisteException ex) {
+        ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        pd.setTitle("Conflicto");
+        pd.setDetail(ex.getMessage());
+        return pd;
+    }
+
+    /** 401 — Credenciales inválidas en el login. */
+    @ExceptionHandler({BadCredentialsException.class, AuthenticationException.class})
+    public ProblemDetail handleAuth(AuthenticationException ex) {
+        ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
+        pd.setTitle("No autenticado");
+        pd.setDetail("Credenciales inválidas.");
+        return pd;
+    }
+}

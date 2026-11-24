@@ -82,3 +82,14 @@ Handler (ProblemDetail RFC-7807), Builder, Dependency Injection, Filter Chain (J
 - **Usuario semilla**: `admin` / `admin123` (rol `ADMIN`). Hash BCrypt `$2a$10$` almacenado en
   `V2__seed.sql`. Útil para login/README. En V2 **no** se siembran salas (para no acoplar los
   tests); las salas de demo se crean vía API.
+- **Seguridad JWT** (Task 3): jjwt 0.12.6 (API nueva `Jwts.builder().signWith(key)` y
+  `Jwts.parser().verifyWith(key)`). Secreto en `app.jwt.secret` (env `JWT_SECRET`), expiración
+  `app.jwt.expiration-ms` (default 1h). Token firma HS384/HS256 según tamaño de clave.
+  `register` crea usuarios con rol `USER`; login usa `AuthenticationManager` + `UsuarioDetailsService`.
+- **Rutas públicas**: `/api/auth/**`, Swagger/OpenAPI, GET de `/api/salas/**` y `/api/reservas/**`,
+  y **`/error`**. `/error` es necesario en la lista: ante un 404, Spring reenvía a `/error` y
+  `OncePerRequestFilter` no corre en el *error dispatch* (`shouldNotFilterErrorDispatch`), por lo
+  que sin permitir `/error` un 404 público se convertiría en 401.
+- **Errores**: `GlobalExceptionHandler` (`@RestControllerAdvice`) devuelve `ProblemDetail`
+  (400 validación con mapa `errores`, 409 duplicado, 401 credenciales). 401/403 de la capa de
+  seguridad (filtros) se emiten como JSON desde `SecurityConfig` (entryPoint/accessDeniedHandler).
