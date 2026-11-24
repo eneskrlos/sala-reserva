@@ -93,3 +93,7 @@ Handler (ProblemDetail RFC-7807), Builder, Dependency Injection, Filter Chain (J
 - **Errores**: `GlobalExceptionHandler` (`@RestControllerAdvice`) devuelve `ProblemDetail`
   (400 validación con mapa `errores`, 409 duplicado, 401 credenciales). 401/403 de la capa de
   seguridad (filtros) se emiten como JSON desde `SecurityConfig` (entryPoint/accessDeniedHandler).
+- **Módulo salas** (Task 4): `POST /api/salas` (JWT) crea sala activa; nombre único
+  (case-insensitive) → 409 `SalaYaExisteException`. `GET /api/salas` (público) lista ordenado por
+  nombre. DTOs `CrearSalaRequest` (solo `nombre` obligatorio; `capacidad` `@Positive`) y
+  `SalaResponse`. Mapeo vía métodos estáticos `from(...)` en los records (sin librería de mapper).
