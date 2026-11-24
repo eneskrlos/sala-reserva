@@ -8,8 +8,8 @@ Leyenda: ⬜ Pendiente · 🟦 En progreso · ✅ Hecha (confirmada por el usuar
 | # | Tarea | Rama | Estado | Confirmada |
 |---|-------|------|--------|------------|
 | 0 | Spec/SDD (CLAUDE, PLAN, ESTADO, Memory) | `feature/analyse_project` | ✅ Hecha | Sí |
-| 1 | Bootstrap del proyecto | `task-1-bootstrap` | ✅ Hecha | Pendiente |
-| 2 | Esquema BD + Flyway | `task-2-esquema-bd` | ⬜ Pendiente | — |
+| 1 | Bootstrap del proyecto | `task-1-bootstrap` | ✅ Hecha | Sí (mergeado a develop) |
+| 2 | Esquema BD + Flyway | `task-2-esquema-bd` | ✅ Hecha | Pendiente |
 | 3 | Seguridad JWT + Auth (login/register) | `task-3-seguridad-jwt` | ⬜ Pendiente | — |
 | 4 | Módulo Salas (crear/listar) | `task-4-salas` | ⬜ Pendiente | — |
 | 5 | Módulo Reservas (crear/cancelar/listar) | `task-5-reservas` | ⬜ Pendiente | — |
@@ -23,4 +23,8 @@ Leyenda: ⬜ Pendiente · 🟦 En progreso · ✅ Hecha (confirmada por el usuar
 - **2026-11-24** — Task 1 (bootstrap): proyecto Maven + Spring Boot 3.3.5, `pom.xml`,
   `application.yml`, `docker-compose.yml` (Postgres en puerto host **5439**), `OpenApiConfig`.
   Verificado: compila, la app arranca contra Postgres, Swagger UI responde (200) y Flyway
-  conecta. Seguridad/JWT diferido a Task 3; Testcontainers a Task 6. **Commit local pendiente de push.**
+  conecta. Seguridad/JWT diferido a Task 3; Testcontainers a Task 6. **Mergeado a develop (pusheado).**
+- **2026-11-24** — Task 2 (esquema BD): migraciones Flyway `V1__init.sql` (tablas `usuarios`,
+  `salas`, `reservas` con checks, FK, exclusion constraint de solape + `btree_gist`, índice) y
+  `V2__seed.sql` (usuario `admin`). Verificado contra Postgres: migraciones aplican, solape
+  bloqueado, reserva contigua permitida, rango inválido rechazado. **Commit local pendiente de push.**
