@@ -106,3 +106,20 @@ Handler (ProblemDetail RFC-7807), Builder, Dependency Injection, Filter Chain (J
   **JPA Specifications** (`ReservaSpecifications`, métodos null-safe) y paginación
   (`@PageableDefault size=20, sort=inicio ASC`). Respuesta envuelta en `PaginaResponse<T>`
   (no se expone `Page` interno). Fechas como `OffsetDateTime` ISO-8601.
+- **Tests** (Task 6): unitarios con Mockito (`ReservaServiceTest`, `JwtServiceTest`) e
+  integración `ReservaIntegrationTest` (`@SpringBootTest` + `@AutoConfigureMockMvc` +
+  Testcontainers `PostgreSQLContainer` con `@ServiceConnection`, que corre las migraciones
+  reales). Login como `admin` semilla para obtener el token dentro del test. 14 tests en total.
+- **IMPORTANTE — compatibilidad Docker 29 + Testcontainers**: docker-java (gestionado por Spring
+  Boot 3.3.5) hace el *ping* con API **1.32**, que Docker Engine 29 rechaza (mínimo **1.44**).
+  Solución aplicada: propiedad de sistema `api.version=1.44` inyectada al JVM de tests vía
+  `maven-surefire-plugin` (`<systemPropertyVariables>`), controlada por la propiedad
+  `docker.api.version` del `pom.xml`. Sin esto, los tests de integración fallan con
+  "client version 1.32 is too old". Subir solo `testcontainers.version` NO basta (docker-java lo
+  fija Spring Boot). Los tests requieren Docker corriendo.
+- **Documentación** (Task 7): `README.md` con ejecución, variables de entorno, endpoints,
+  ejemplos `curl`, modelo de datos, tests y las secciones para el evaluador (decisiones, qué haría
+  con más tiempo, uso de IA).
+- **Estado del proyecto**: completadas las 7 tareas (bootstrap, esquema BD, seguridad JWT, salas,
+  reservas, tests, README). Flujo de trabajo: rama `task-<n>-<nombre>` desde `develop`, reporte +
+  confirmación por tarea, merge a `develop` por Claude, **push siempre por el usuario**.

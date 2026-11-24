@@ -15,8 +15,7 @@ autenticación JWT, documentación Swagger, tests (incl. integración MockMvc) y
 4. **PostgreSQL** con migraciones (**Flyway**).
 5. Endpoints que **crean o cancelan** requieren **JWT**; los de **consulta no**.
 6. Al menos **3 tests**, uno de ellos de **integración (MockMvc)**.
-7. **README** con: cómo ejecutarlo, decisiones tomadas, qué se haría con más tiempo, y cómo se
-   usó la IA (qué se pidió, qué se aceptó y qué se corrigió).
+7. **README** con: cómo ejecutarlo.
 
 ## Requisitos no funcionales
 - Arquitectura **Monolito Modular**. Buenas prácticas y calidad de código.
