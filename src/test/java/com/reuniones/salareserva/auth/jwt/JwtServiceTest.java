@@ -25,7 +25,7 @@ class JwtServiceTest {
     @BeforeEach
     void setUp() {
         JwtProperties props = new JwtProperties(
-                "secreto-de-pruebas-suficientemente-largo-para-hmac-256-bits", 3_600_000L);
+                "secreto-de-pruebas-suficientemente-largo-para-hmac-256-bits", 900000L, 604800000);
         jwtService = new JwtService(props);
     }
 

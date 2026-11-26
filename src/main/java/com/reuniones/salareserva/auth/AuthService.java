@@ -1,13 +1,18 @@
 package com.reuniones.salareserva.auth;
 
+
+import com.reuniones.salareserva.auth.domain.RolUsuario;
 import com.reuniones.salareserva.auth.domain.Usuario;
 import com.reuniones.salareserva.auth.domain.UsuarioRepository;
 import com.reuniones.salareserva.auth.dto.AuthResponse;
 import com.reuniones.salareserva.auth.dto.LoginRequest;
+import com.reuniones.salareserva.auth.dto.RefreshRequest;
 import com.reuniones.salareserva.auth.dto.RegisterRequest;
 import com.reuniones.salareserva.auth.dto.UsuarioResponse;
 import com.reuniones.salareserva.auth.jwt.JwtService;
+import com.reuniones.salareserva.shared.exception.RecursoNoEncontradoException;
 import com.reuniones.salareserva.shared.exception.UsuarioYaExisteException;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,21 +23,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AuthService {
 
-    private static final String ROL_POR_DEFECTO = "USER";
+    
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final RefreshTokenService refreshTokenService;
 
     public AuthService(UsuarioRepository usuarioRepository,
                        PasswordEncoder passwordEncoder,
                        AuthenticationManager authenticationManager,
-                       JwtService jwtService) {
+                       JwtService jwtService, RefreshTokenService refreshTokenService
+                    ) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.refreshTokenService = refreshTokenService;
     }
 
     /** Registra un nuevo usuario con rol USER. Lanza 409 si el username ya existe. */
@@ -44,7 +52,7 @@ public class AuthService {
         Usuario usuario = Usuario.builder()
                 .username(request.username())
                 .password(passwordEncoder.encode(request.password()))
-                .rol(ROL_POR_DEFECTO)
+                .rol(RolUsuario.USER)
                 .build();
         return UsuarioResponse.from(usuarioRepository.save(usuario));
     }
@@ -54,6 +62,16 @@ public class AuthService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.username(), request.password()));
         String token = jwtService.generarToken(request.username());
-        return AuthResponse.bearer(token, jwtService.getExpirationMs());
+        Usuario usuario = usuarioRepository.findByUsername(request.username())
+            .orElseThrow(() -> new RecursoNoEncontradoException("usuario", request.username()));
+        String refreshToken = refreshTokenService.crear(usuario).token();
+        return AuthResponse.bearer(token, jwtService.getExpirationMs(), refreshToken);
+    }
+
+    public AuthResponse refrescar(RefreshRequest req) {
+
+       String username = refreshTokenService.validar(req.refreshToken()).username();
+       String token = jwtService.generarToken(username);
+       return AuthResponse.bearer(token, jwtService.getExpirationMs(), req.refreshToken());
     }
 }

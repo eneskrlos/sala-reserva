@@ -2,6 +2,7 @@ package com.reuniones.salareserva.auth;
 
 import com.reuniones.salareserva.auth.dto.AuthResponse;
 import com.reuniones.salareserva.auth.dto.LoginRequest;
+import com.reuniones.salareserva.auth.dto.RefreshRequest;
 import com.reuniones.salareserva.auth.dto.RegisterRequest;
 import com.reuniones.salareserva.auth.dto.UsuarioResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,4 +38,11 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
+
+    @PostMapping("/refresh")
+    @Operation(summary = "Devuelve un nuevo access token a partir de un refresh token")
+    public ResponseEntity<AuthResponse> refrescar(@Valid @RequestBody RefreshRequest request) {
+        return ResponseEntity.ok(authService.refrescar(request));
+    }
+
 }

@@ -60,7 +60,7 @@ public class SecurityConfig {
                         // Consultas públicas
                         .requestMatchers(HttpMethod.GET, "/api/salas/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/reservas/**").permitAll()
-                        // El resto (POST/DELETE de salas y reservas) requiere autenticación
+                        .requestMatchers(HttpMethod.POST, "/api/salas").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(authenticationEntryPoint())

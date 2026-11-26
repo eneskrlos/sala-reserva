@@ -17,16 +17,19 @@ public class JwtService {
 
     private final SecretKey key;
     private final long expirationMs;
+    private final long refreshExpirationMs;
 
     public JwtService(JwtProperties properties) {
         this.key = Keys.hmacShaKeyFor(properties.secret().getBytes(StandardCharsets.UTF_8));
         this.expirationMs = properties.expirationMs();
+        this.refreshExpirationMs = properties.refreshExpirationMs();
     }
 
     /** Genera un token cuyo subject es el username. */
     public String generarToken(String username) {
         Date ahora = new Date();
         Date expira = new Date(ahora.getTime() + expirationMs);
+        
         return Jwts.builder()
                 .subject(username)
                 .issuedAt(ahora)
@@ -62,4 +65,10 @@ public class JwtService {
                 .parseSignedClaims(token)
                 .getPayload();
     }
+
+    public long getRefreshExpirationMs() {
+        return refreshExpirationMs;
+    }
+
+    
 }

@@ -27,7 +27,8 @@ app:
   jwt:
     # Secreto HMAC-SHA256 (mínimo 32 bytes). Sobrescribir en producción vía JWT_SECRET.
     secret: ${JWT_SECRET:cambiar-este-secreto-super-seguro-para-sala-reserva-jwt-2026}
-    expiration-ms: ${JWT_EXPIRATION_MS:3600000}   # 1 hora
+    expiration-ms: ${JWT_EXPIRATION_MS:900000}   # 15 min (access)
+    refresh-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000} # 7 días (refresh)
 
 # Documentación OpenAPI / Swagger UI
 springdoc:

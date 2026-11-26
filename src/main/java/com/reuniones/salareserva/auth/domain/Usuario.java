@@ -2,6 +2,8 @@ package com.reuniones.salareserva.auth.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,8 +39,9 @@ public class Usuario {
     @Column(nullable = false, length = 100)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
-    private String rol;
+    private RolUsuario rol;
 
     /** Lo asigna la base de datos (DEFAULT now()); solo lectura desde la app. */
     @Column(name = "created_at", insertable = false, updatable = false)
